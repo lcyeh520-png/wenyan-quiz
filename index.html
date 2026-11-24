@@ -1372,21 +1372,21 @@
         function initQuickTags() {
             const container = document.getElementById('quick-translate-tags');
             container.innerHTML = QUICK_TRANSLATE_ITEMS.map(item => `
-                <button onclick="setTranslateKeyword('${item.raw}')" 
+                <button onclick="setTranslateKeyword('${item.raw}', ${item.id})" 
                     class="px-2.5 py-1 rounded-lg text-xs bg-parchment-200 hover:bg-carmine-700 hover:text-white transition text-ink-800 border border-parchment-300">
                     ${item.raw}
                 </button>
             `).join('');
         }
 
-        function setTranslateKeyword(text) {
+        function setTranslateKeyword(text, directId) {
             playChime();
             const input = document.getElementById('translate-input');
             input.value = text;
-            executeTranslation();
+            executeTranslation(directId);
         }
 
-        function executeTranslation() {
+        function executeTranslation(directId = null) {
             playChime();
             const inputVal = document.getElementById('translate-input').value.trim();
             if (!inputVal) {
@@ -1394,19 +1394,57 @@
                 return;
             }
 
-            // Find best matching item
-            let matched = QUOTES_DATA.find(q => 
-                q.vernacular.includes(inputVal) || 
-                inputVal.includes(q.vernacular.replace(/[？。！，]/g, '')) ||
-                q.target.includes(inputVal)
-            );
+            let matched = null;
 
-            // Fallback: search anywhere
+            // 1. 優先以快捷按鈕指定的精準 ID 匹配
+            if (directId) {
+                matched = QUOTES_DATA.find(q => q.id === directId);
+            }
+
+            // 2. 若為手動輸入，去除標點後比對快捷表與關鍵字規則
             if (!matched) {
-                matched = QUOTES_DATA.find(q => 
-                    q.classical.includes(inputVal) || 
-                    q.category.includes(inputVal)
+                const stripPunct = (s) => s.replace(/[？。！，、；：「」『』（）\s]/g, '');
+                const cleanInput = stripPunct(inputVal);
+
+                const quickHit = QUICK_TRANSLATE_ITEMS.find(item => 
+                    stripPunct(item.raw) === cleanInput || cleanInput.includes(stripPunct(item.raw))
                 );
+                if (quickHit) {
+                    matched = QUOTES_DATA.find(q => q.id === quickHit.id);
+                }
+
+                if (!matched) {
+                    const keywordMap = [
+                        { keys: ['滾遠', '別讓我看到', '別再讓我看到', '滾開'], id: 13 },
+                        { keys: ['算什麼東西', '配教訓', '說教'], id: 24 },
+                        { keys: ['這張嘴', '欠教養', '欠家教', '沒教養'], id: 23 },
+                        { keys: ['閉嘴', '安靜'], id: 1 },
+                        { keys: ['關你', '屁事'], id: 3 },
+                        { keys: ['吵'], id: 4 },
+                        { keys: ['放屁', '沒道理'], id: 5 },
+                        { keys: ['聽不懂', '人話'], id: 6 },
+                        { keys: ['裝懂', '不懂'], id: 7 },
+                        { keys: ['不要臉', '無恥'], id: 9 },
+                        { keys: ['貼金', '幾兩重'], id: 11 },
+                        { keys: ['有病', '發神經'], id: 12 },
+                        { keys: ['腦袋有問題', '腦袋'], id: 25 },
+                        { keys: ['有臉講'], id: 26 },
+                        { keys: ['嘴賤'], id: 27 }
+                    ];
+                    const rule = keywordMap.find(r => r.keys.some(k => cleanInput.includes(k)));
+                    if (rule) {
+                        matched = QUOTES_DATA.find(q => q.id === rule.id);
+                    }
+                }
+
+                if (!matched) {
+                    matched = QUOTES_DATA.find(q => 
+                        stripPunct(q.vernacular).includes(cleanInput) || 
+                        cleanInput.includes(stripPunct(q.vernacular)) ||
+                        q.target.includes(inputVal) ||
+                        q.classical.includes(inputVal)
+                    );
+                }
             }
 
             // Default fallback if totally unique
