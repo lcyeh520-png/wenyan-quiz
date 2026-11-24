@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>古風雅謔・優雅罵人不帶髒字</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tone.js for elegant traditional sound effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
+    <!-- Google Fonts: Noto Serif TC -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+
+    <!-- 載入完整支援繁體中文（含滿、紙、謬、觀、瘋等所有正體國字）之古典行楷/書法 web font -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-tc-web/style.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Noto Serif TC"', 'serif'],
+                        calligraphy: ['"LXGW WenKai TC"', '"BiauKai"', '"DFKai-SB"', '"Kaiti TC"', '"STKaiti"', 'serif'],
+                    },
+                    colors: {
+                        ink: {
+                            900: '#151515',
+                            800: '#232323',
+                            700: '#343434',
+                            500: '#5c5c5c',
+                            100: '#e5e2db'
+                        },
+                        carmine: {
+                            600: '#9b1c1c',
+                            700: '#801414',
+                            800: '#661010'
+                        },
+                        parchment: {
+                            50: '#faf8f2',
+                            100: '#f5f0e6',
+                            200: '#ece3d2',
+                            300: '#dfd2b8',
+                            400: '#c5b494'
+                        },
+                        bamboo: '#2c402e',
+                        goldleaf: '#c39d48'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Noto Serif TC', serif;
+            background-color: #f7f3ea;
+            background-image: radial-gradient(#dfd4c2 0.75px, transparent 0.75px), radial-gradient(#dfd4c2 0.75px, #f7f3ea 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            color: #1f1f1f;
+        }
+
+        /* Classical vermilion seal */
+        .seal-stamp {
+            border: 2px solid #9b1c1c;
+            color: #9b1c1c;
+            position: relative;
+            box-shadow: inset 0 0 4px rgba(155, 28, 28, 0.4);
+            transform: rotate(-3deg);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+        }
+
+        /* Traditional scroll border */
+        .ancient-border {
+            border: 1px solid #d4c5a9;
+            box-shadow: 0 4px 20px -2px rgba(44, 30, 15, 0.08), inset 0 0 0 1px #fffaf2;
+        }
+
+        /* 完整繁體中文行楷書法字體鏈（徹底解決繁體正字「滿、紙、謬、觀、瘋」缺字跳體問題） */
+        .font-kai {
+            font-family: 'LXGW WenKai TC', 'BiauKai', 'DFKai-SB', 'Kaiti TC', 'STKaiti', 'Noto Serif TC', cursive, serif !important;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #ede6d6;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #bda783;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8b6e49;
+        }
+
+        /* Card flip effect */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-carmine-600 selection:text-white pb-16">
+
+    <!-- Toast / Notification Message -->
+    <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-all duration-300 transform -translate-y-2">
+        <div class="bg-ink-900 text-parchment-100 px-6 py-3 rounded-full shadow-2xl border border-goldleaf flex items-center gap-3">
+            <span class="seal-stamp text-xs px-1 py-0.5 rounded border-amber-500 text-amber-400">印</span>
+            <span id="toast-text" class="text-sm tracking-wide">已複製妙語至剪貼簿</span>
+        </div>
+    </div>
+
+    <!-- Header / Banner -->
+    <header class="relative overflow-hidden bg-ink-900 text-parchment-100 border-b-4 border-carmine-700 shadow-xl">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <!-- Decorative cloud / ink graphic corner -->
+        <div class="absolute right-0 top-0 w-80 h-full opacity-15 pointer-events-none flex items-center justify-end pr-6">
+            <i class="fa-solid fa-scroll text-9xl text-parchment-300"></i>
+        </div>
+
+        <div class="max-w-6xl mx-auto px-4 py-8 md:py-10 relative z-10">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="text-center md:text-left">
+                    <div class="inline-flex items-center gap-2 mb-2">
+                        <span class="seal-stamp px-2 py-0.5 rounded text-xs tracking-widest bg-red-950/40 text-red-400 border-red-500">
+                            文人風骨・寸鐵殺人
+                        </span>
+                        <span class="text-xs text-parchment-400 tracking-wider">｜ 無半字粗鄙，令小人噤聲</span>
+                    </div>
+                    <h1 class="text-3xl md:text-5xl font-kai tracking-widest text-parchment-50 font-bold drop-shadow-md">
+                        古風雅謔・優雅罵人集
+                    </h1>
+                    <p class="mt-2 text-parchment-300 text-sm md:text-base max-w-xl font-light leading-relaxed">
+                        夫罵人之道，貴在含蓄凝練。言之有物，冷雋森嚴；笑裡藏鋒，殺人不見血。
+                    </p>
+                </div>
+
+                <!-- Fast Actions / Sound Toggle -->
+                <div class="flex items-center gap-2.5 bg-ink-800/80 p-2.5 rounded-2xl border border-ink-700 backdrop-blur">
+                    <button id="btn-sound" onclick="toggleAudio()" class="px-3.5 py-2 rounded-xl text-xs flex items-center gap-2 bg-ink-700 hover:bg-ink-500 text-parchment-200 transition">
+                        <i id="sound-icon" class="fa-solid fa-volume-high text-goldleaf"></i>
+                        <span id="sound-label">古箏清音：開</span>
+                    </button>
+                    <button onclick="switchTab('quiz')" class="px-4 py-2 rounded-xl text-xs font-semibold bg-carmine-700 hover:bg-carmine-600 text-white shadow-md transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-graduation-cap"></i> 考場答題
+                    </button>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <nav class="flex items-center justify-center md:justify-start gap-2 md:gap-4 mt-8 border-t border-ink-700/60 pt-4 overflow-x-auto">
+                <button onclick="switchTab('cards')" id="tab-cards" class="tab-btn px-4 py-2 rounded-lg text-sm md:text-base font-semibold transition flex items-center gap-2 text-white bg-carmine-700 shadow">
+                    <i class="fa-solid fa-book-bookmark"></i> 雅罵秘笈閣
+                </button>
+                <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn px-4 py-2 rounded-lg text-sm md:text-base font-medium transition flex items-center gap-2 text-parchment-300 hover:text-white hover:bg-ink-800">
+                    <i class="fa-solid fa-feather-pointed"></i> 猜猜罵何人 (Quiz)
+                </button>
+                <button onclick="switchTab('scenario')" id="tab-scenario" class="tab-btn px-4 py-2 rounded-lg text-sm md:text-base font-medium transition flex items-center gap-2 text-parchment-300 hover:text-white hover:bg-ink-800">
+                    <i class="fa-solid fa-compass"></i> 情境回懟心法
+                </button>
+                <button onclick="switchTab('translator')" id="tab-translator" class="tab-btn px-4 py-2 rounded-lg text-sm md:text-base font-medium transition flex items-center gap-2 text-parchment-300 hover:text-white hover:bg-ink-800">
+                    <i class="fa-solid fa-language"></i> 白話轉雅言
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-4 py-8 flex-1 w-full">
+
+        <!-- ================= SECTION 1: 雅罵秘笈閣 (Card Dictionary) ================= -->
+        <section id="section-cards" class="tab-content transition-all duration-300">
+            <!-- Filter Bar & Search -->
+            <div class="bg-parchment-100 p-5 rounded-2xl ancient-border mb-8 shadow-sm">
+                <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+                    <!-- Search Input -->
+                    <div class="relative flex-1">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-500"></i>
+                        <input type="text" id="card-search" placeholder="搜尋金句、白話粗言、適用場合、典故..."
+                            class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-parchment-300 bg-parchment-50 focus:outline-none focus:ring-2 focus:ring-carmine-600 text-sm placeholder:text-ink-500">
+                    </div>
+
+                    <!-- Category Pills -->
+                    <div class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 scrollbar-none" id="category-pills">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="mt-4 pt-3 border-t border-parchment-200 text-xs text-ink-500 flex flex-wrap items-center justify-between gap-2">
+                    <span>共收錄 <strong id="total-count" class="text-carmine-700 font-bold">27</strong> 則傳世雅懟神句（預設密封，請猜其真意）</span>
+                    <div class="flex items-center gap-3">
+                        <button onclick="toggleAllCards()" id="btn-toggle-all" class="px-2.5 py-1 rounded-lg bg-parchment-200 hover:bg-carmine-700 hover:text-white transition font-semibold text-ink-800 flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-regular fa-eye" id="toggle-all-icon"></i>
+                            <span id="toggle-all-text">一鍵全部解密</span>
+                        </button>
+                        <span class="hidden sm:inline-flex items-center gap-1"><i class="fa-solid fa-hand-pointer text-carmine-600"></i>點擊卡片解密</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Grid -->
+            <div id="cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Cards injected here -->
+            </div>
+            
+            <div id="no-results" class="hidden text-center py-16 text-ink-500">
+                <i class="fa-regular fa-face-frown text-4xl mb-2 text-parchment-400"></i>
+                <p>啟稟閣下，未尋得合適之譏諷金句，請換個詞試試。</p>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 2: 猜猜罵何人 (Quiz Mode) ================= -->
+        <section id="section-quiz" class="tab-content hidden transition-all duration-300 max-w-3xl mx-auto">
+            <!-- Quiz Card Panel -->
+            <div class="bg-parchment-100 rounded-3xl ancient-border p-6 md:p-10 shadow-lg relative overflow-hidden">
+                <!-- Imperial seal background watermark -->
+                <div class="absolute right-4 bottom-4 text-parchment-200 -rotate-12 pointer-events-none select-none">
+                    <i class="fa-solid fa-stamp text-9xl opacity-30"></i>
+                </div>
+
+                <!-- Quiz Header -->
+                <div class="flex items-center justify-between border-b border-parchment-300 pb-4 mb-6">
+                    <div>
+                        <span class="seal-stamp text-xs px-2 py-0.5 rounded border-carmine-700 bg-red-100 text-carmine-800">
+                            殿試考評
+                        </span>
+                        <h2 class="text-xl md:text-2xl font-bold font-kai tracking-wider text-ink-900 mt-1">
+                            文人鬥智考場・辯才策
+                        </h2>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-xs text-ink-500">當前進度</div>
+                        <div class="text-base font-bold text-carmine-700" id="quiz-progress">第 1 / 10 題</div>
+                    </div>
+                </div>
+
+                <!-- Question Screen -->
+                <div id="quiz-question-box">
+                    <div class="mb-2 text-xs font-semibold text-ink-500 uppercase tracking-widest flex items-center gap-1.5">
+                        <i class="fa-solid fa-circle-question text-carmine-600"></i> 請審辨此言玄機：
+                    </div>
+                    
+                    <!-- Question Prompt Quote -->
+                    <div class="p-6 rounded-2xl bg-parchment-50 border-2 border-parchment-300 text-center my-4 shadow-inner relative">
+                        <span class="absolute -top-3 left-6 bg-parchment-200 px-3 py-0.5 rounded-full text-xs text-ink-700 font-bold" id="quiz-type-badge">
+                            文言翻譯題
+                        </span>
+                        <p id="quiz-quote" class="text-2xl md:text-3xl font-kai tracking-widest text-ink-900 font-bold leading-relaxed">
+                            「君若不言，天下甚幸。」
+                        </p>
+                        <p id="quiz-subtext" class="text-xs text-ink-500 mt-2">
+                            請問：說這句話時，內心最直接的粗鄙想法是什麼？是在罵何種人？
+                        </p>
+                    </div>
+
+                    <!-- Options Grid -->
+                    <div id="quiz-options" class="space-y-3 mt-6">
+                        <!-- Injected by JS -->
+                    </div>
+
+                    <!-- Instant Explanation Panel (hidden by default) -->
+                    <div id="quiz-explanation" class="mt-6 p-4 rounded-xl hidden border">
+                        <div class="flex items-center gap-2 font-bold mb-1" id="quiz-result-title"></div>
+                        <div id="quiz-result-body" class="text-sm text-ink-700 leading-relaxed"></div>
+                        <div class="mt-4 flex justify-end">
+                            <button id="btn-next-question" onclick="nextQuizQuestion()" class="px-5 py-2 rounded-xl text-sm font-semibold bg-carmine-700 hover:bg-carmine-600 text-white shadow transition flex items-center gap-1.5">
+                                下一題 <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quiz Finished Screen (hidden) -->
+                <div id="quiz-finish-box" class="hidden text-center py-8">
+                    <div class="w-20 h-20 mx-auto seal-stamp rounded-full text-3xl mb-4 border-2 border-carmine-700 text-carmine-700 flex items-center justify-center bg-red-50">
+                        批
+                    </div>
+                    <h3 class="text-2xl font-bold font-kai tracking-wide text-ink-900">策試考評完畢</h3>
+                    <p class="text-sm text-ink-500 mt-1">閣下舌戰群儒，刀筆鋒芒已呈御前</p>
+
+                    <div class="my-6 p-6 rounded-2xl bg-parchment-50 border border-parchment-300 max-w-md mx-auto shadow-sm">
+                        <div class="text-xs text-ink-500 mb-1">獲得文膽品級</div>
+                        <div id="quiz-rank" class="text-3xl font-kai font-black text-carmine-700 mb-2">雍正硃批毒舌帝</div>
+                        <div class="text-sm text-ink-700 mb-3" id="quiz-score-desc">答對 10 / 10 題（得分率 100%）</div>
+                        <p id="quiz-comment" class="text-xs text-ink-600 border-t border-parchment-200 pt-3 leading-relaxed">
+                            「觀汝之辯才，針針見血，罵人不見一字髒，實乃當代文膽之典範！」
+                        </p>
+                    </div>
+
+                    <div class="flex justify-center gap-4">
+                        <button onclick="restartQuiz()" class="px-5 py-2.5 rounded-xl text-sm font-semibold bg-parchment-300 hover:bg-parchment-400 text-ink-900 transition flex items-center gap-2">
+                            <i class="fa-solid fa-rotate-right"></i> 再考一輪
+                        </button>
+                        <button onclick="switchTab('cards')" class="px-5 py-2.5 rounded-xl text-sm font-semibold bg-carmine-700 hover:bg-carmine-600 text-white shadow transition flex items-center gap-2">
+                            <i class="fa-solid fa-book"></i> 查閱秘笈
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 3: 情境回懟心法 (Scenario Simulator) ================= -->
+        <section id="section-scenario" class="tab-content hidden transition-all duration-300 max-w-4xl mx-auto">
+            <div class="bg-parchment-100 rounded-3xl ancient-border p-6 md:p-10 shadow-lg">
+                <div class="max-w-xl mx-auto text-center mb-8">
+                    <span class="seal-stamp text-xs px-2 py-0.5 rounded border-carmine-700 bg-red-100 text-carmine-800">妙策應變</span>
+                    <h2 class="text-2xl md:text-3xl font-kai font-bold tracking-wider text-ink-900 mt-2">
+                        日常討厭情境・文人化解指南
+                    </h2>
+                    <p class="text-xs md:text-sm text-ink-500 mt-2">
+                        遇此惡人惡事，何須動怒撒潑？且請翰林名士附體，撫鬚含笑，一語破之。
+                    </p>
+                </div>
+
+                <!-- Scenario Selector -->
+                <div class="max-w-xl mx-auto mb-8">
+                    <label class="block text-xs font-bold text-ink-700 mb-2">請選擇閣下眼前所遇之困厄情境：</label>
+                    <div class="relative">
+                        <select id="scenario-selector" onchange="applyScenario()" 
+                            class="w-full px-4 py-3 rounded-2xl border-2 border-parchment-300 bg-parchment-50 font-medium text-ink-800 focus:outline-none focus:ring-2 focus:ring-carmine-700 cursor-pointer shadow-sm">
+                            <!-- Populated by JS -->
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Generated Scenario Detail Card -->
+                <div id="scenario-result-box" class="bg-parchment-50 rounded-2xl border-2 border-parchment-300 p-6 md:p-8 shadow-sm">
+                    <!-- Dynamic Content -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 4: 白話轉雅言 (Translator) ================= -->
+        <section id="section-translator" class="tab-content hidden transition-all duration-300 max-w-3xl mx-auto">
+            <div class="bg-parchment-100 rounded-3xl ancient-border p-6 md:p-10 shadow-lg">
+                <div class="text-center mb-8">
+                    <span class="seal-stamp text-xs px-2 py-0.5 rounded border-carmine-700 bg-red-100 text-carmine-800">點石成金</span>
+                    <h2 class="text-2xl md:text-3xl font-kai font-bold tracking-wider text-ink-900 mt-2">
+                        凡俗詈語・文雅升級轉換器
+                    </h2>
+                    <p class="text-xs md:text-sm text-ink-500 mt-2">
+                        選擇或輸入一句現代衝動火大話，即刻兌換成含蓄文雅、句意冰寒的古風文言。
+                    </p>
+                </div>
+
+                <!-- Preset quick chips -->
+                <div class="mb-6">
+                    <div class="text-xs font-bold text-ink-500 mb-2.5">快捷選取常見俗語：</div>
+                    <div class="flex flex-wrap gap-2" id="quick-translate-tags">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Interactive translation interface -->
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs font-bold text-ink-700 block mb-1">現代白話（想罵的衝動話）：</label>
+                        <input type="text" id="translate-input" placeholder="例如：關你屁事、你有病嗎、聽你在放屁..."
+                            class="w-full px-4 py-3 rounded-xl border border-parchment-300 bg-parchment-50 focus:outline-none focus:ring-2 focus:ring-carmine-600 text-base">
+                    </div>
+
+                    <div class="text-center">
+                        <button onclick="executeTranslation()" class="px-6 py-2.5 rounded-xl font-bold bg-carmine-700 hover:bg-carmine-600 text-white shadow-md transition inline-flex items-center gap-2">
+                            <i class="fa-solid fa-feather"></i> 潤色成文言雅罵
+                        </button>
+                    </div>
+
+                    <!-- Translation Result Display -->
+                    <div id="translate-result" class="mt-6 p-6 rounded-2xl bg-parchment-50 border-2 border-parchment-300 shadow-inner">
+                        <div class="flex items-center justify-between mb-3 border-b border-parchment-200 pb-2">
+                            <span class="text-xs font-bold text-ink-500">雅言化境成果</span>
+                            <button id="btn-copy-trans" onclick="copyTranslated()" class="text-xs text-carmine-700 hover:text-carmine-800 font-bold flex items-center gap-1">
+                                <i class="fa-regular fa-copy"></i> 複製此句
+                            </button>
+                        </div>
+                        <div id="trans-output-quote" class="text-2xl md:text-3xl font-kai font-bold text-ink-900 tracking-wider text-center py-4">
+                            「君若少言，四座皆安。」
+                        </div>
+                        <div id="trans-output-meta" class="text-xs text-ink-600 bg-parchment-200/60 p-3 rounded-xl space-y-1">
+                            <div><strong class="text-ink-800">【言下之意】：</strong> 你可以不要那麼吵嗎？</div>
+                            <div><strong class="text-ink-800">【施展心法】：</strong> 既保全自身體面，又令滿堂皆覺對方聒噪無度。</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto py-8 text-center text-xs text-ink-500 border-t border-parchment-300">
+        <p class="font-kai text-sm text-ink-700 mb-1">「世無不可對之言，唯在言者如何折衝樽俎。」</p>
+        <p>整理自社群雅謔名句、故宮清代硃批、先秦諸子文獻與鄉野詼諧對聯・供文雅切磋娛樂之用</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // ================= 1. COMPLETE DATASET (27 Quotes with Explicit Citations) =================
+        const QUOTES_DATA = [
+            {
+                id: 1,
+                classical: "君若不言，天下甚幸。",
+                vernacular: "你可以閉嘴嗎？",
+                category: "長舌聒噪",
+                target: "喋喋不休講廢話、無端造謠或在群組洗版之徒",
+                occasion: "大型會議、專案群組被無效洗版、社交聚會有人高談闊論",
+                source: "",
+                lethality: 4,
+                nuance: "語氣看似心懷天下蒼生，實則嫌你聒噪至極，閉上嘴便是對人間最大的功德。"
+            },
+            {
+                id: 2,
+                classical: "滿紙乖謬之言，觀汝似有瘋症。",
+                vernacular: "整篇都在胡說八道，我看你像發神經。",
+                category: "官府硃批",
+                target: "思維錯亂、顛倒是非黑白、寫出荒唐企劃或公文者",
+                occasion: "主管批改荒誕離譜的報告、反駁滿紙荒唐的指責信函",
+                source: "國立故宮博物院藏 清・雍正七年七月初二日硃批奏摺",
+                lethality: 5,
+                nuance: "雍正皇帝御筆親批，至尊之威。不帶髒字，直接替對方的精神狀態做出診斷。"
+            },
+            {
+                id: 3,
+                classical: "此事與君何干？",
+                vernacular: "關你屁事？",
+                category: "多管閒事",
+                target: "愛打探隱私、刺探薪水感情的八卦好事之徒",
+                occasion: "過年被三姑六婆逼問、同仁刺探私人生活與隱私",
+                source: "",
+                lethality: 3,
+                nuance: "短促有力，冷峻如鐵。築起一堵無形的高牆，優雅地請對方退回自己的界線。"
+            },
+            {
+                id: 4,
+                classical: "君若少言，四座皆安。",
+                vernacular: "你可以不要那麼吵嗎？",
+                category: "長舌聒噪",
+                target: "公共場合大聲喧嘩、影廳或自習室高談闊論之輩",
+                occasion: "安靜圖書館、高鐵車廂、會議室旁若無人喧嘩時",
+                source: "",
+                lethality: 4,
+                nuance: "借眾人（四座）之名，指出其一人破壞全場安寧，使其成為群體之公敵。"
+            },
+            {
+                id: 5,
+                classical: "君言雖多，未聞一理。",
+                vernacular: "聽你在放屁，沒一句有道理。",
+                category: "邏輯智商",
+                target: "長篇大論卻滿嘴歪理、強詞奪理之徒",
+                occasion: "辯論會場、業務會議爭執、反駁酸民長文",
+                source: "",
+                lethality: 4,
+                nuance: "承認其「言多」，卻全盤否定其「無理」。以學術嚴謹姿態直接給對方判零分。"
+            },
+            {
+                id: 6,
+                classical: "吾言皆人語，君何獨不解？",
+                vernacular: "你是不是聽不懂人話？",
+                category: "邏輯智商",
+                target: "裝傻充愣、再三溝通仍鬼打牆的對象或豬隊友",
+                occasion: "跨部門專案交接無效、指令講了八百次仍裝傻時",
+                source: "",
+                lethality: 4,
+                nuance: "反詰句式。明示我說的是文明人類語言，暗示不解之人非屬此類。"
+            },
+            {
+                id: 7,
+                classical: "既未通其理，何必強為之說？",
+                vernacular: "不懂就閉嘴，少裝懂！",
+                category: "半吊裝懂",
+                target: "不懂裝懂、外行指點內行的半吊子「磚家」",
+                occasion: "專業研討會、外行長官硬加意見、技術規格審查",
+                source: "",
+                lethality: 3,
+                nuance: "直指對方學藝不精卻硬要硬拗，撕下對方偽裝專業的面具。"
+            },
+            {
+                id: 8,
+                classical: "己身未正，何以議人？",
+                vernacular: "自己什麼樣子，還敢說別人？",
+                category: "道德雙標",
+                target: "嚴以待人寬以律己、雙重標準的長舌婦或小人",
+                occasion: "被他人背後指指點點，當場義正辭嚴予以回敬",
+                source: "《論語·子路》「其身不正，雖令不從」",
+                lethality: 4,
+                nuance: "出自儒家「正己而後正人」之道，從道德制高點直接予以迎頭痛擊。"
+            },
+            {
+                id: 9,
+                classical: "君獨不知世間有恥乎？",
+                vernacular: "你怎麼這麼不要臉？",
+                category: "道德雙標",
+                target: "厚顏無恥、做錯事還理直氣壯之人",
+                occasion: "揭發剽竊抄襲、搶佔功勞被拆穿時",
+                source: "《管子·牧民》「禮義廉恥，國之四維」",
+                lethality: 5,
+                nuance: "將個人行為上升至人類共同知恥之天理，痛斥其已喪失為人之基本操守。"
+            },
+            {
+                id: 10,
+                classical: "天下之事，君皆欲主之乎？",
+                vernacular: "你很愛管閒事耶！",
+                category: "多管閒事",
+                target: "越權插手、管天管地、好管閒事的控管狂",
+                occasion: "旁系親友插手家庭事務、隔壁組同事指手畫腳",
+                source: "",
+                lethality: 3,
+                nuance: "把對方的越界管閒事反諷為「自以為天下之主」，令其自慚退縮。"
+            },
+            {
+                id: 11,
+                classical: "君之自許，遠逾其才。",
+                vernacular: "少往自己臉上貼金，也不秤秤自己幾兩重！",
+                category: "狂妄自傲",
+                target: "吹牛不打草稿、才疏學淺卻自詡天才之徒",
+                occasion: "同事浮誇表功、面試或專案吹噓被打臉",
+                source: "",
+                lethality: 4,
+                nuance: "精確剖析對方「自我認知」與「真實才幹」之間的鴻溝，字字如刀。"
+            },
+            {
+                id: 12,
+                classical: "君有疾乎？",
+                vernacular: "你有病嗎？",
+                category: "經典典故",
+                target: "行事怪誕、提出離譜至極之無理要求者",
+                occasion: "遭遇匪夷所思的刁難時，作關切狀冷淡反詰",
+                source: "《韓非子·喻老》「扁鵲見蔡桓公」",
+                lethality: 3,
+                nuance: "表面是名醫關懷病體，實則是直接斥問對方腦袋是否正常；對方若答「多謝關心」更成千古笑柄。"
+            },
+            {
+                id: 13,
+                classical: "願君遠行，莫復相逢。",
+                vernacular: "滾遠一點，別再讓我看到你！",
+                category: "終極絕交",
+                target: "品行卑劣已無交往價值、欲徹底割席的小人",
+                occasion: "絕交割席、與背叛之友人劃清界線、拒絕糾纏",
+                source: "",
+                lethality: 4,
+                nuance: "措辭平靜而祝禱遠行，字底卻是永不相見之冷酷決絕，無一絲留戀。"
+            },
+            {
+                id: 14,
+                classical: "食勿言，勸君莫言是非。",
+                vernacular: "吃就吃，不要在那邊嚼舌根！",
+                category: "長舌聒噪",
+                target: "在餐桌上挑三揀四、吃著別人的飯還講酸話之徒",
+                occasion: "親友聚會或請客吃飯時有人滿腹牢騷破壞氣氛",
+                source: "《論語·鄉黨》「食不言，寢不語」",
+                lethality: 3,
+                nuance: "引孔子古訓「食不言」，既提醒用餐禮儀，又警告其積口德莫搬弄是非。"
+            },
+            {
+                id: 15,
+                classical: "汝不知汝爹履復幾何？",
+                vernacular: "（台語）你甘知恁北鞋仔穿幾號？",
+                category: "長輩威嚇",
+                target: "不知天高地厚的小輩或毛頭小子挑釁長者",
+                occasion: "前輩壓陣、訓斥囂張狂妄晚輩、歷史名師幽默口頭禪",
+                source: "",
+                lethality: 4,
+                nuance: "將台語江湖豪氣「恁北鞋仔穿幾號」以「文白典雅」包裝，既接地氣又具喜劇威懾力。"
+            },
+            {
+                id: 16,
+                classical: "君自重若千鈞，於旁人卻輕如一羽。",
+                vernacular: "少把自己當回事，根本沒人在乎你！",
+                category: "狂妄自傲",
+                target: "自戀膨脹、自命不凡、以為世界繞他轉之徒",
+                occasion: "戳破自命清高的傲慢態度、拆穿虛矯擺譜",
+                source: "",
+                lethality: 4,
+                nuance: "「千鈞」與「一羽」的強烈對比，瞬間戳破對方自我感覺良好的肥皂泡。"
+            },
+            {
+                id: 17,
+                classical: "爾母婢也！",
+                vernacular: "你媽是奴婢！（現代『他媽的』之鼻祖）",
+                category: "經典典故",
+                target: "氣急敗壞罵對方出身卑微下作、極端蔑視",
+                occasion: "先秦君臣痛斥、終極國罵之源流探索",
+                source: "《戰國策·趙策》",
+                lethality: 5,
+                nuance: "正宗先秦古罵，相傳為現代漢語國罵之源頭，古典而野性十足。"
+            },
+            {
+                id: 18,
+                classical: "豎子，不足與謀！",
+                vernacular: "乳臭未乾的小毛頭，根本不配一起成大事！",
+                category: "經典典故",
+                target: "目光短淺、辦不成事、成事不足敗事有餘的豬隊友",
+                occasion: "合夥人關鍵時刻掉鏈子、團隊隊友搞砸專案",
+                source: "《史記·項羽本紀》",
+                lethality: 5,
+                nuance: "亞父范增鴻門宴上的痛徹心扉之罵，千百年來專治不中用之夥伴。"
+            },
+            {
+                id: 19,
+                classical: "朽木不可雕也，糞土之牆不可汙也。",
+                vernacular: "資質太爛、懶散到底，徹底無藥可救！",
+                category: "經典典故",
+                target: "不知悔改、屢教不改、爛泥扶不上牆之人",
+                occasion: "導師痛斥懶惰弟子、主管對擺爛員工徹底絕望時",
+                source: "《論語·公冶長》",
+                lethality: 5,
+                nuance: "至聖先師孔子的毒舌代表作。直接將對方比喻為腐木與爛泥，宣判放棄治療。"
+            },
+            {
+                id: 20,
+                classical: "井蛙不可以語於海者，拘於虛也。",
+                vernacular: "眼界短淺的人，跟你講也是白費唇舌！",
+                category: "經典典故",
+                target: "見識淺薄又自以為是、雞同鴨講的槓精",
+                occasion: "格局不同無法溝通時，終止無謂的口舌之爭",
+                source: "《莊子·秋水》",
+                lethality: 4,
+                nuance: "道家哲思化為武器。點出溝通之所以無效，是因受限於對方狹隘的井底格局。"
+            },
+            {
+                id: 21,
+                classical: "汝何不以溺自照？",
+                vernacular: "你怎麼不撒泡尿自己照照鏡子？",
+                category: "經典典故",
+                target: "癩蛤蟆想吃天鵝肉、毫無自知之明的盲目自大者",
+                occasion: "戳穿非分非禮之妄想、拒絕自不量力的追求或要求",
+                source: "宋・程顥、程頤《河南程氏文集拾遺》",
+                lethality: 5,
+                nuance: "「溺」者小便也。文雅的字詞包裹著極端刻薄的本質，令人瞬間面紅耳赤。"
+            },
+            {
+                id: 22,
+                classical: "人而無儀，不死何為？（胡不遄死？）",
+                vernacular: "你怎麼還不趕快去死一死？",
+                category: "經典典故",
+                target: "喪盡天良、卑鄙下流、道德淪喪至極者",
+                occasion: "在道德制高點對無恥行徑表達極端義憤",
+                source: "《詩經·鄘風·相鼠》",
+                lethality: 5,
+                nuance: "詩經以鼠喻人，連老鼠尚知齒儀，為人無禮行徑，不如早死歸土。"
+            },
+            {
+                id: 23,
+                classical: "聞君一席話，方知庭訓尚有未及之處。",
+                vernacular: "聽你講話，才知道你真的有夠欠家教！",
+                category: "道德雙標",
+                target: "口無遮攔、粗鄙無禮、缺乏基本家庭修養者",
+                occasion: "對方出口傷人、缺乏教養時，斯文地諷刺其家教不足",
+                source: "",
+                lethality: 5,
+                nuance: "「庭訓」即家教。不直接罵你沒品，而是嘆惜你家族教育的疏漏遺憾。"
+            },
+            {
+                id: 24,
+                classical: "不知君有何德，足為吾師？",
+                vernacular: "你算什麼東西，也配教訓我？",
+                category: "半吊裝懂",
+                target: "好為人師、倚老賣老、指手畫腳的平輩或偽前輩",
+                occasion: "同儕越位指點、倚老賣老者在耳邊說教時回嗆",
+                source: "",
+                lethality: 4,
+                nuance: "質疑對方的德行與資質，從根本上瓦解對方企圖扮演「導師」的心理優越感。"
+            },
+            {
+                id: 25,
+                classical: "君之所思，實非常理所能及。",
+                vernacular: "你腦袋有問題是不是？",
+                category: "邏輯智商",
+                target: "邏輯奇葩、天馬行空提出荒謬要求者",
+                occasion: "會議提出不可思議的反智提案、對方強辯不可理喻時",
+                source: "",
+                lethality: 3,
+                nuance: "表面似讚美其思路超凡脫俗，實則定性為「不合人類正常常理」。"
+            },
+            {
+                id: 26,
+                classical: "此言出於君口，尤令人不解。",
+                vernacular: "你怎麼有臉講這種話？",
+                category: "道德雙標",
+                target: "自己作惡多端，卻道貌岸然指責別人者（賊喊捉賊）",
+                occasion: "做過同樣爛事的人跑來訓斥別人時當面反刺",
+                source: "",
+                lethality: 4,
+                nuance: "鎖定「出自你口」這點，暗示天下誰人都能講，唯獨你最沒有資格講。"
+            },
+            {
+                id: 27,
+                classical: "君之才，莫非盡付於譏人？",
+                vernacular: "你除了嘴賤酸人，還有什麼本事？",
+                category: "長舌聒噪",
+                target: "整天在網路酸言酸語、毫無建設性貢獻的鍵盤俠",
+                occasion: "反駁職場冷嘲熱諷的同事、回敬社群網路酸民",
+                source: "",
+                lethality: 4,
+                nuance: "承認你有才能，但悲哀的是這種才華全部浪費在無意義的嘴賤上。"
+            }
+        ];
+
+        // Categories (Removed '諧音彩蛋')
+        const CATEGORIES = ["全選", "長舌聒噪", "多管閒事", "道德雙標", "邏輯智商", "經典典故", "半吊裝懂", "狂妄自傲", "終極絕交", "官府硃批"];
+
+        // Scenarios Dataset for Scenario Simulator
+        const SCENARIOS = [
+            {
+                id: 1,
+                title: "過年聚會親戚打探隱私與薪資",
+                context: "過年返鄉，三姑六婆連環追問：『一個月賺多少？買房沒？怎麼還不結婚？』",
+                responseId: 3, // 此事與君何干？
+                extraAdvice: "端起茶杯，面帶淡雅微笑，輕啜一口後從容道出。語調切忌尖銳，越是平靜冷淡，越顯長輩失禮造次。"
+            },
+            {
+                id: 2,
+                title: "跨部門開會同事瘋狂推托甩鍋",
+                context: "專案出了包，平時摸魚的同仁當著主管的面顛倒是非，強行甩鍋給他人。",
+                responseId: 8, // 己身未正，何以議人？
+                extraAdvice: "直視對方雙眼，不疾不徐點出其自身權責漏洞。以儒家綱常立於不敗之地，讓主管與全場心知肚明。"
+            },
+            {
+                id: 3,
+                title: "完全不懂專業的外行長官硬加意見",
+                context: "外行主管對設計與程式細節指指點點，提出違反邏輯的反智需求，還自詡專業。",
+                responseId: 7, // 既未通其理，何必強為之說？
+                extraAdvice: "附上詳盡技術數據與規格書，以請益切磋的姿態呈上此言，讓對方在專業高牆前自行知難而退。"
+            },
+            {
+                id: 4,
+                title: "公司大群組被冗長廢話無效洗版",
+                context: "下班時間已到，某位同仁仍在工作群組長篇大論轉發無關痛癢的心得與假消息。",
+                responseId: 1, // 君若不言，天下甚幸。
+                extraAdvice: "可搭配文雅雙手合十表情符號發出，既具幽默調侃感，又能精準道出全群組同仁敢怒不敢言的心聲。"
+            },
+            {
+                id: 5,
+                title: "聚餐有人白吃白喝還挑三揀四抱怨",
+                context: "朋友或同事請客聚餐，某位蹭飯者邊吃邊嫌菜色差、嫌餐廳檔次低，滿嘴酸言酸語。",
+                responseId: 14, // 食勿言，勸君莫言是非。
+                extraAdvice: "優雅夾菜置其碗中，溫和規勸。以聖人禮教之名封堵其口，既保全主人顏面，又令挑釁者自覺難堪。"
+            },
+            {
+                id: 6,
+                title: "社群網路遭遇毫無邏輯的酸民槓精",
+                context: "發布專業分享文，底下出現純粹為了槓而槓、語無倫次甚至人身攻擊的網路酸民。",
+                responseId: 20, // 井蛙不可以語於海者，拘於虛也。
+                extraAdvice: "回覆此句後直接封鎖或開啟通知靜音。不再糾纏，讓旁觀網友領略雙方格局之高下立判。"
+            },
+            {
+                id: 7,
+                title: "團隊夥伴關鍵時刻擺爛搞砸專案",
+                context: "交代好的核心任務一拖再拖，最後關頭丟出千瘡百孔的半成品，還兩手一攤無所謂。",
+                responseId: 18, // 豎子，不足與謀！
+                extraAdvice: "重整團隊分工，當機立斷接管權限。以霸氣姿態宣告不再與此等格局之人共謀大事。"
+            },
+            {
+                id: 8,
+                title: "對方做盡虧心事還道貌岸然指責他人",
+                context: "自己平時慣性遲到偷懶、搶人功勞，卻在公開會議上義正辭嚴批評別人不夠敬業。",
+                responseId: 26, // 此言出於君口，尤令人不解。
+                extraAdvice: "輕輕搖頭，微露錯愕之神情。著重強調『出自閣下之口』的反差感，令全場瞬間回想起其過往劣跡。"
+            }
+        ];
+
+        // State
+        let currentCategory = "全選";
+        let searchQuery = "";
+        let audioEnabled = true;
+        let revealedCardIds = new Set(); // 記錄當前解密的卡片 ID，預設皆為空（即初始全遮蔽無答案）
+
+        // ================= 1.5 DEDICATED GUZHENG WEB AUDIO SYNTH: 空谷幽蘭 =================
+        let audioCtx = null;
+        function getAudioContext() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContextClass();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        // 專屬指定音色【空谷幽蘭】：宮調低音挑弦，沉穩古雅、厚重木質琴身共振與悠長衰減
+        function playChime(actionType = 'normal') {
+            if (!audioEnabled) return;
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+
+                if (actionType === 'wrong') {
+                    // 低音暗啞的單弦悶拂音（沉悶短促的按弦阻尼感）
+                    [146.83, 155.56].forEach((freq, idx) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        const filter = ctx.createBiquadFilter();
+
+                        osc.type = 'sawtooth';
+                        osc.frequency.setValueAtTime(freq, now + idx * 0.05);
+
+                        // 模擬手掌悶弦阻尼
+                        filter.type = 'lowpass';
+                        filter.frequency.setValueAtTime(450, now);
+
+                        gain.gain.setValueAtTime(0.12, now + idx * 0.05);
+                        gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.05 + 0.38);
+
+                        osc.connect(filter);
+                        filter.connect(gain);
+                        gain.connect(ctx.destination);
+
+                        osc.start(now + idx * 0.05);
+                        osc.stop(now + idx * 0.05 + 0.4);
+                    });
+                    return;
+                }
+
+                if (actionType === 'correct') {
+                    // 「空谷幽蘭」低沉典雅五聲和鳴（G3 -> D4 -> G4 疊加，厚重開朗）
+                    const orchidHarmonics = [196.00, 293.66, 392.00, 587.33];
+                    orchidHarmonics.forEach((freq, idx) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        const filter = ctx.createBiquadFilter();
+
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, now + idx * 0.06);
+
+                        // 木質琴箱共鳴濾波
+                        filter.type = 'lowpass';
+                        filter.frequency.setValueAtTime(1400, now + idx * 0.06);
+                        filter.frequency.exponentialRampToValueAtTime(500, now + idx * 0.06 + 0.9);
+
+                        gain.gain.setValueAtTime(0.16, now + idx * 0.06);
+                        gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.06 + 1.1);
+
+                        osc.connect(filter);
+                        filter.connect(gain);
+                        gain.connect(ctx.destination);
+
+                        osc.start(now + idx * 0.06);
+                        osc.stop(now + idx * 0.06 + 1.15);
+                    });
+                    return;
+                }
+
+                // 常規操作 / 點擊翻轉卡片：【空谷幽蘭】經典挑弦（G3 196Hz + D4 293.66Hz）
+                // 具備古箏特有的厚重木質琴箱共鳴與長 decay 餘韻
+                const baseChords = [196.00, 293.66];
+                baseChords.forEach((freq, idx) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    const filter = ctx.createBiquadFilter();
+
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.03);
+
+                    // 沉穩醇厚的溫潤音色濾波
+                    filter.type = 'lowpass';
+                    filter.frequency.setValueAtTime(1100, now + idx * 0.03);
+                    filter.frequency.exponentialRampToValueAtTime(350, now + idx * 0.03 + 0.85);
+
+                    gain.gain.setValueAtTime(0.18, now + idx * 0.03);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.03 + 0.95);
+
+                    osc.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(ctx.destination);
+
+                    osc.start(now + idx * 0.03);
+                    osc.stop(now + idx * 0.03 + 1.0);
+                });
+            } catch (err) {
+                console.log("Audio play error:", err);
+            }
+        }
+
+        function toggleAudio() {
+            audioEnabled = !audioEnabled;
+            const icon = document.getElementById('sound-icon');
+            const label = document.getElementById('sound-label');
+            if (audioEnabled) {
+                icon.className = "fa-solid fa-volume-high text-goldleaf";
+                label.innerText = "古箏清音：開";
+                playChime();
+            } else {
+                icon.className = "fa-solid fa-volume-xmark text-ink-500";
+                label.innerText = "古箏清音：關";
+            }
+        }
+
+        // ================= 2. TAB SWITCHING =================
+        function switchTab(tabId) {
+            playChime();
+            const tabs = ['cards', 'quiz', 'scenario', 'translator'];
+            tabs.forEach(t => {
+                const sec = document.getElementById(`section-${t}`);
+                const btn = document.getElementById(`tab-${t}`);
+                if (t === tabId) {
+                    sec.classList.remove('hidden');
+                    btn.className = "tab-btn px-4 py-2 rounded-lg text-sm md:text-base font-semibold transition flex items-center gap-2 text-white bg-carmine-700 shadow";
+                } else {
+                    sec.classList.add('hidden');
+                    btn.className = "tab-btn px-4 py-2 rounded-lg text-sm md:text-base font-medium transition flex items-center gap-2 text-parchment-300 hover:text-white hover:bg-ink-800";
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            if (tabId === 'quiz' && !quizInitialized) {
+                initQuiz();
+            }
+        }
+
+        // ================= 3. RENDER CARDS & SEARCH =================
+        function initCategoryPills() {
+            const container = document.getElementById('category-pills');
+            container.innerHTML = CATEGORIES.map(cat => `
+                <button onclick="filterCategory('${cat}')" 
+                    id="cat-pill-${cat}"
+                    class="px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition border ${cat === currentCategory ? 'bg-ink-900 text-parchment-100 border-ink-900' : 'bg-parchment-50 text-ink-700 border-parchment-300 hover:bg-parchment-200'}">
+                    ${cat}
+                </button>
+            `).join('');
+        }
+
+        function filterCategory(cat) {
+            currentCategory = cat;
+            playChime();
+            initCategoryPills();
+            renderCards();
+        }
+
+        function renderStars(level) {
+            let html = '';
+            for (let i = 0; i < 5; i++) {
+                if (i < level) {
+                    html += `<i class="fa-solid fa-burst text-carmine-600 text-xs mr-0.5"></i>`;
+                } else {
+                    html += `<i class="fa-solid fa-burst text-parchment-300 text-xs mr-0.5 opacity-50"></i>`;
+                }
+            }
+            return html;
+        }
+
+        function renderCards() {
+            const grid = document.getElementById('cards-grid');
+            const noResults = document.getElementById('no-results');
+            const searchVal = searchQuery.trim().toLowerCase();
+
+            const filtered = QUOTES_DATA.filter(item => {
+                const matchCat = currentCategory === "全選" || item.category === currentCategory;
+                const matchSearch = !searchVal || 
+                    item.classical.toLowerCase().includes(searchVal) ||
+                    item.vernacular.toLowerCase().includes(searchVal) ||
+                    item.target.toLowerCase().includes(searchVal) ||
+                    item.occasion.toLowerCase().includes(searchVal) ||
+                    item.source.toLowerCase().includes(searchVal);
+                return matchCat && matchSearch;
+            });
+
+            document.getElementById('total-count').innerText = filtered.length;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            }
+
+            noResults.classList.add('hidden');
+            grid.innerHTML = filtered.map(item => {
+                const isRevealed = revealedCardIds.has(item.id);
+
+                return `
+                <div class="card-item group bg-parchment-50 rounded-2xl ancient-border p-5 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-xl relative overflow-hidden cursor-pointer" 
+                    id="card-${item.id}" onclick="handleCardClick(event, ${item.id})">
+                    
+                    <!-- Card Top Header -->
+                    <div class="flex items-center justify-between gap-2 mb-3">
+                        <span class="seal-stamp text-[10px] px-2 py-0.5 rounded border-carmine-700 text-carmine-700 bg-red-50">
+                            ${item.category}
+                        </span>
+                        <div class="flex items-center gap-1" title="殺傷力指數：${item.lethality}/5">
+                            <span class="text-[10px] text-ink-500 font-bold mr-1">殺傷度:</span>
+                            ${renderStars(item.lethality)}
+                        </div>
+                    </div>
+
+                    <!-- Classical Quote Main (純粹展示行楷金句，不附加句末出處) -->
+                    <div class="my-2">
+                        <h3 class="text-xl md:text-2xl font-kai font-bold tracking-wider text-ink-900 leading-snug group-hover:text-carmine-800 transition">
+                            「${item.classical}」
+                        </h3>
+                    </div>
+
+                    <!-- Answer / Detail Box: Default HIDDEN unless revealed -->
+                    <div id="detail-${item.id}" class="${isRevealed ? '' : 'hidden'} mt-3 pt-3 border-t border-parchment-200 text-xs space-y-2 text-ink-700 bg-parchment-100/70 p-3 rounded-xl transition-all">
+                        <div class="text-sm font-bold text-carmine-700 flex items-center gap-1.5 pb-1 border-b border-parchment-200">
+                            <i class="fa-solid fa-comment-dots text-carmine-600"></i>
+                            <span>白話直譯：${item.vernacular}</span>
+                        </div>
+                        <div>
+                            <strong class="text-ink-900"><i class="fa-solid fa-bullseye text-carmine-600 mr-1"></i>罵何許人：</strong>
+                            <span>${item.target}</span>
+                        </div>
+                        <div>
+                            <strong class="text-ink-900"><i class="fa-solid fa-location-dot text-amber-700 mr-1"></i>適用場合：</strong>
+                            <span>${item.occasion}</span>
+                        </div>
+                        ${item.source ? `
+                        <div>
+                            <strong class="text-ink-900"><i class="fa-solid fa-book-bookmark text-bamboo mr-1"></i>典故出處：</strong>
+                            <span class="text-ink-600 italic">${item.source}</span>
+                        </div>` : ''}
+                        <p class="text-ink-500 text-[11px] leading-relaxed pt-1 border-t border-parchment-200">
+                            <strong>【妙處剖析】：</strong>${item.nuance}
+                        </p>
+                    </div>
+
+                    <!-- Unrevealed Prompt Badge (shown when not revealed) -->
+                    <div id="seal-prompt-${item.id}" class="${isRevealed ? 'hidden' : 'flex'} flex-col items-center justify-center py-6 border border-dashed border-parchment-300 rounded-xl my-2 bg-parchment-100/40 text-ink-500 hover:text-carmine-700 transition">
+                        <span class="seal-stamp text-xs px-2 py-0.5 rounded border-amber-800 text-amber-800 bg-amber-50 mb-1.5">
+                            封印中・點擊揭曉
+                        </span>
+                        <span class="text-[11px] text-ink-400">猜猜看：此句到底是在罵什麼人？</span>
+                    </div>
+
+                    <!-- Bottom Action Bar -->
+                    <div class="mt-4 pt-2 border-t border-parchment-200 flex items-center justify-between text-xs" onclick="event.stopPropagation()">
+                        <button onclick="toggleCardDetail(${item.id})" class="text-ink-600 hover:text-carmine-700 font-semibold transition flex items-center gap-1">
+                            <i class="fa-solid ${isRevealed ? 'fa-eye-slash' : 'fa-wand-magic-sparkles'}" id="toggle-icon-${item.id}"></i> 
+                            <span id="toggle-lbl-${item.id}">${isRevealed ? '重新密封' : '翻轉解密'}</span>
+                        </button>
+                        <button onclick="copyToClipboard('${item.classical}', '已將「${item.classical}」載入錦囊')" 
+                            class="px-3 py-1 rounded-lg bg-parchment-200 hover:bg-carmine-700 hover:text-white transition font-medium text-ink-800 flex items-center gap-1 shadow-sm">
+                            <i class="fa-regular fa-copy"></i> 複製金句
+                        </button>
+                    </div>
+                </div>
+            `;
+            }).join('');
+        }
+
+        // Handle clicking the card body
+        function handleCardClick(event, id) {
+            // Prevent triggering if clicked directly on buttons
+            if (event.target.closest('button')) return;
+            toggleCardDetail(id);
+        }
+
+        function toggleCardDetail(id) {
+            playChime();
+            const detail = document.getElementById(`detail-${id}`);
+            const prompt = document.getElementById(`seal-prompt-${id}`);
+            const lbl = document.getElementById(`toggle-lbl-${id}`);
+            const icon = document.getElementById(`toggle-icon-${id}`);
+
+            if (revealedCardIds.has(id)) {
+                revealedCardIds.delete(id);
+                if (detail) detail.classList.add('hidden');
+                if (prompt) prompt.classList.remove('hidden');
+                if (lbl) lbl.innerText = "翻轉解密";
+                if (icon) icon.className = "fa-solid fa-wand-magic-sparkles";
+            } else {
+                revealedCardIds.add(id);
+                if (detail) detail.classList.remove('hidden');
+                if (prompt) prompt.classList.add('hidden');
+                if (lbl) lbl.innerText = "重新密封";
+                if (icon) icon.className = "fa-solid fa-eye-slash";
+            }
+        }
+
+        // Toggle all cards between revealed and hidden
+        function toggleAllCards() {
+            playChime();
+            const btnText = document.getElementById('toggle-all-text');
+            const btnIcon = document.getElementById('toggle-all-icon');
+            
+            if (revealedCardIds.size === QUOTES_DATA.length) {
+                // Currently all revealed -> hide all
+                revealedCardIds.clear();
+                btnText.innerText = "一鍵全部解密";
+                btnIcon.className = "fa-regular fa-eye";
+                showToast("已遮蔽所有解說答案，進入自測模式");
+            } else {
+                // Reveal all
+                QUOTES_DATA.forEach(q => revealedCardIds.add(q.id));
+                btnText.innerText = "一鍵全部密封";
+                btnIcon.className = "fa-regular fa-eye-slash";
+                showToast("已揭曉所有妙語解說答案");
+            }
+            renderCards();
+        }
+
+        // ================= 4. TOAST NOTIFICATION & CLIPBOARD =================
+        function showToast(text) {
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toast-text');
+            toastText.innerText = text;
+            toast.classList.remove('opacity-0', '-translate-y-2');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', '-translate-y-2');
+                toast.classList.remove('opacity-100', 'translate-y-0');
+            }, 2200);
+        }
+
+        function copyToClipboard(text, customToastMsg) {
+            playChime();
+            // Use textarea execCommand compatible with iframe environments
+            const temp = document.createElement('textarea');
+            temp.value = text;
+            temp.style.position = 'fixed';
+            temp.style.left = '-9999px';
+            document.body.appendChild(temp);
+            temp.select();
+            try {
+                document.execCommand('copy');
+                showToast(customToastMsg || `已複製：「${text}」`);
+            } catch (err) {
+                showToast(`複製失敗，請手動複製`);
+            }
+            document.body.removeChild(temp);
+        }
+
+        // ================= 5. QUIZ GAME LOGIC =================
+        let quizQuestions = [];
+        let currentQuestionIdx = 0;
+        let quizScore = 0;
+        let quizInitialized = false;
+
+        function generateQuizPool() {
+            // Generate 10 diverse quiz questions based on the dataset
+            const shuffled = [...QUOTES_DATA].sort(() => 0.5 - Math.random());
+            const selectedQuotes = shuffled.slice(0, 10);
+
+            return selectedQuotes.map((targetQuote, qIndex) => {
+                const isTypeClassicalToModern = (qIndex % 2 === 0);
+
+                const others = QUOTES_DATA.filter(q => q.id !== targetQuote.id)
+                                          .sort(() => 0.5 - Math.random())
+                                          .slice(0, 3);
+
+                if (isTypeClassicalToModern) {
+                    const options = [
+                        { text: targetQuote.vernacular + `（罵：${targetQuote.target}）`, correct: true, item: targetQuote },
+                        ...others.map(o => ({ text: o.vernacular + `（罵：${o.target}）`, correct: false, item: o }))
+                    ].sort(() => 0.5 - Math.random());
+
+                    return {
+                        typeTitle: "【文言辨意題】",
+                        prompt: `「${targetQuote.classical}」`,
+                        subtext: `請問在文人雅謔之境中，此話翻成大白話到底是在罵什麼？`,
+                        options,
+                        explanation: `【正解解析】：此句即為「${targetQuote.vernacular}」，主要用於反擊「${targetQuote.target}」。${targetQuote.source ? '出自' + targetQuote.source + '。' : ''}${targetQuote.nuance}`
+                    };
+                } else {
+                    const options = [
+                        { text: `「${targetQuote.classical}」`, correct: true, item: targetQuote },
+                        ...others.map(o => ({ text: `「${o.classical}」`, correct: false, item: o }))
+                    ].sort(() => 0.5 - Math.random());
+
+                    return {
+                        typeTitle: "【情境應對題】",
+                        prompt: `情境：${targetQuote.occasion}`,
+                        subtext: `若要回擊「${targetQuote.target}」，哪一句古典雅罵最具殺傷力？`,
+                        options,
+                        explanation: `【正解解析】：最適之言為「${targetQuote.classical}」（白話即：${targetQuote.vernacular}）。${targetQuote.nuance}`
+                    };
+                }
+            });
+        }
+
+        function initQuiz() {
+            quizQuestions = generateQuizPool();
+            currentQuestionIdx = 0;
+            quizScore = 0;
+            quizInitialized = true;
+            document.getElementById('quiz-finish-box').classList.add('hidden');
+            document.getElementById('quiz-question-box').classList.remove('hidden');
+            renderQuizQuestion();
+        }
+
+        function restartQuiz() {
+            playChime();
+            initQuiz();
+        }
+
+        function renderQuizQuestion() {
+            const q = quizQuestions[currentQuestionIdx];
+            document.getElementById('quiz-progress').innerText = `第 ${currentQuestionIdx + 1} / ${quizQuestions.length} 題`;
+            document.getElementById('quiz-type-badge').innerText = q.typeTitle;
+            document.getElementById('quiz-quote').innerText = q.prompt;
+            document.getElementById('quiz-subtext').innerText = q.subtext;
+
+            // reset explanation box
+            const exp = document.getElementById('quiz-explanation');
+            exp.classList.add('hidden');
+
+            const optContainer = document.getElementById('quiz-options');
+            optContainer.innerHTML = q.options.map((opt, idx) => `
+                <button onclick="handleQuizAnswer(${idx})" id="quiz-opt-${idx}" 
+                    class="quiz-btn w-full text-left p-4 rounded-xl border border-parchment-300 bg-parchment-50 hover:bg-parchment-200 transition font-medium text-ink-900 flex items-start gap-3">
+                    <span class="w-6 h-6 rounded-full bg-parchment-200 border border-parchment-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                        ${String.fromCharCode(65 + idx)}
+                    </span>
+                    <span class="text-sm md:text-base leading-relaxed">${opt.text}</span>
+                </button>
+            `).join('');
+        }
+
+        function handleQuizAnswer(selectedIdx) {
+            const q = quizQuestions[currentQuestionIdx];
+            const isCorrect = q.options[selectedIdx].correct;
+
+            // Disable all options
+            const buttons = document.querySelectorAll('.quiz-btn');
+            buttons.forEach(b => b.disabled = true);
+
+            // Highlight chosen & correct
+            buttons.forEach((b, idx) => {
+                if (q.options[idx].correct) {
+                    b.classList.remove('bg-parchment-50', 'bg-parchment-200');
+                    b.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-950', 'font-bold');
+                } else if (idx === selectedIdx) {
+                    b.classList.remove('bg-parchment-50', 'bg-parchment-200');
+                    b.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-950');
+                }
+            });
+
+            const exp = document.getElementById('quiz-explanation');
+            const title = document.getElementById('quiz-result-title');
+            const body = document.getElementById('quiz-result-body');
+
+            if (isCorrect) {
+                quizScore += 1;
+                playChime('correct');
+                exp.className = "mt-6 p-4 rounded-xl border border-emerald-400 bg-emerald-50 text-emerald-900";
+                title.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600"></i> <span class="text-emerald-700">明察秋毫！回答正確</span>`;
+            } else {
+                playChime('wrong');
+                exp.className = "mt-6 p-4 rounded-xl border border-rose-400 bg-rose-50 text-rose-900";
+                title.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600"></i> <span class="text-rose-700">棋差一著，未能勘破玄機</span>`;
+            }
+
+            body.innerText = q.explanation;
+            exp.classList.remove('hidden');
+        }
+
+        function nextQuizQuestion() {
+            playChime();
+            currentQuestionIdx++;
+            if (currentQuestionIdx < quizQuestions.length) {
+                renderQuizQuestion();
+            } else {
+                showQuizResult();
+            }
+        }
+
+        function showQuizResult() {
+            document.getElementById('quiz-question-box').classList.add('hidden');
+            const finishBox = document.getElementById('quiz-finish-box');
+            finishBox.classList.remove('hidden');
+
+            const scoreDesc = document.getElementById('quiz-score-desc');
+            const rankTitle = document.getElementById('quiz-rank');
+            const rankComment = document.getElementById('quiz-comment');
+
+            scoreDesc.innerText = `答對 ${quizScore} / ${quizQuestions.length} 題（準確率 ${quizScore * 10}%）`;
+
+            if (quizScore === 10) {
+                rankTitle.innerText = "雍正硃批・毒舌帝尊";
+                rankComment.innerText = "「觀汝之辯才，針針見血，不著一字葷腥而天下皆懾，實乃當代文膽之至尊也！」";
+            } else if (quizScore >= 8) {
+                rankTitle.innerText = "翰林院・舌劍學士";
+                rankComment.innerText = "「言辭冷雋，文質彬彬。小人逢汝，如芒刺在背，退避三舍。」";
+            } else if (quizScore >= 6) {
+                rankTitle.innerText = "策士之資・精妙秀才";
+                rankComment.innerText = "「頗知雅謔之妙，尚需歷練心境。遇狂妄之輩，已有自保反擊之功。」";
+            } else {
+                rankTitle.innerText = "儒林童生・溫厚君子";
+                rankComment.innerText = "「閣下心地淳厚，尚不知人心險惡。速多研讀秘笈閣，以防小人欺善！」";
+            }
+            playChime(quizScore >= 6 ? 'correct' : 'wrong');
+        }
+
+        // ================= 6. SCENARIO SIMULATOR =================
+        function initScenarios() {
+            const selector = document.getElementById('scenario-selector');
+            selector.innerHTML = SCENARIOS.map((s, idx) => `
+                <option value="${idx}">${idx + 1}. ${s.title}</option>
+            `).join('');
+            applyScenario();
+        }
+
+        function applyScenario() {
+            const idx = parseInt(document.getElementById('scenario-selector').value, 10);
+            const scenario = SCENARIOS[idx];
+            const quote = QUOTES_DATA.find(q => q.id === scenario.responseId);
+            const box = document.getElementById('scenario-result-box');
+
+            box.innerHTML = `
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 border-b border-parchment-300 pb-3 mb-4">
+                    <div>
+                        <span class="text-xs text-carmine-700 font-bold uppercase tracking-wider">【情境實況】</span>
+                        <h4 class="text-base font-bold text-ink-900 mt-0.5">${scenario.context}</h4>
+                    </div>
+                    <button onclick="copyToClipboard('${quote.classical}', '已將錦囊妙語複製至剪貼簿')" 
+                        class="px-3 py-1.5 rounded-xl bg-carmine-700 hover:bg-carmine-600 text-white text-xs font-semibold shadow transition flex items-center gap-1 shrink-0">
+                        <i class="fa-regular fa-copy"></i> 複製回懟詞
+                    </button>
+                </div>
+
+                <!-- Main recommended line (純粹展示行楷金句) -->
+                <div class="bg-parchment-100 p-6 rounded-2xl border border-parchment-300 text-center my-4">
+                    <div class="text-xs text-ink-500 mb-1 font-bold">—— 翰林學士賜予之回懟錦囊 ——</div>
+                    <div class="text-2xl md:text-3xl font-kai font-black text-ink-900 tracking-widest my-2">
+                        「${quote.classical}」
+                    </div>
+                    <div class="text-xs text-carmine-700 font-semibold mt-1">
+                        白話直白解讀：${quote.vernacular}
+                    </div>
+                </div>
+
+                <!-- Strategy details -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs mt-4">
+                    <div class="bg-parchment-200/50 p-3.5 rounded-xl">
+                        <strong class="text-ink-900 block mb-1"><i class="fa-solid fa-chess-rook text-carmine-700 mr-1"></i>應對姿態心法：</strong>
+                        <p class="text-ink-700 leading-relaxed">${scenario.extraAdvice}</p>
+                    </div>
+                    <div class="bg-parchment-200/50 p-3.5 rounded-xl">
+                        <strong class="text-ink-900 block mb-1"><i class="fa-solid fa-scroll text-bamboo mr-1"></i>語氣神韻建議：</strong>
+                        <p class="text-ink-700 leading-relaxed">切忌氣急敗壞，宜「神態自若、目光沉靜、音量放輕」。以高緯度之修養俯視對方之嘈雜，方收奇效。</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ================= 7. TRANSLATOR =================
+        const QUICK_TRANSLATE_ITEMS = [
+            { raw: "關你屁事", id: 3 },
+            { raw: "你可以閉嘴嗎", id: 1 },
+            { raw: "你有病嗎", id: 12 },
+            { raw: "聽你在放屁", id: 5 },
+            { raw: "滾遠一點別讓我看到", id: 13 },
+            { raw: "不懂就閉嘴少裝懂", id: 7 },
+            { raw: "你腦袋有問題是不是", id: 25 },
+            { raw: "你算什麼東西配教訓我", id: 24 },
+            { raw: "你這張嘴真欠教養", id: 23 },
+            { raw: "少往自己臉上貼金", id: 11 }
+        ];
+
+        function initQuickTags() {
+            const container = document.getElementById('quick-translate-tags');
+            container.innerHTML = QUICK_TRANSLATE_ITEMS.map(item => `
+                <button onclick="setTranslateKeyword('${item.raw}')" 
+                    class="px-2.5 py-1 rounded-lg text-xs bg-parchment-200 hover:bg-carmine-700 hover:text-white transition text-ink-800 border border-parchment-300">
+                    ${item.raw}
+                </button>
+            `).join('');
+        }
+
+        function setTranslateKeyword(text) {
+            playChime();
+            const input = document.getElementById('translate-input');
+            input.value = text;
+            executeTranslation();
+        }
+
+        function executeTranslation() {
+            playChime();
+            const inputVal = document.getElementById('translate-input').value.trim();
+            if (!inputVal) {
+                showToast("請先輸入欲轉換之言辭");
+                return;
+            }
+
+            // Find best matching item
+            let matched = QUOTES_DATA.find(q => 
+                q.vernacular.includes(inputVal) || 
+                inputVal.includes(q.vernacular.replace(/[？。！，]/g, '')) ||
+                q.target.includes(inputVal)
+            );
+
+            // Fallback: search anywhere
+            if (!matched) {
+                matched = QUOTES_DATA.find(q => 
+                    q.classical.includes(inputVal) || 
+                    q.category.includes(inputVal)
+                );
+            }
+
+            // Default fallback if totally unique
+            if (!matched) {
+                matched = {
+                    classical: "君之言行，實非凡庸所敢苟同。",
+                    vernacular: inputVal,
+                    nuance: "以萬用客套外衣，委婉表達對其言行舉止的徹底否定與敬謝不敏。",
+                    target: "無端冒犯之人"
+                };
+            }
+
+            const quoteEl = document.getElementById('trans-output-quote');
+            const metaEl = document.getElementById('trans-output-meta');
+
+            quoteEl.innerText = `「${matched.classical}」`;
+            metaEl.innerHTML = `
+                <div><strong class="text-ink-800">【言下之意】：</strong> ${matched.vernacular}</div>
+                <div><strong class="text-ink-800">【針對對象】：</strong> ${matched.target || '滋擾生事之徒'}</div>
+                <div><strong class="text-ink-800">【施展心法】：</strong> ${matched.nuance || '不著痕跡，自顯文骨。'}</div>
+            `;
+            showToast("已成功化凡俗為雅言");
+        }
+
+        function copyTranslated() {
+            const text = document.getElementById('trans-output-quote').innerText.replace(/[「」]/g, '');
+            copyToClipboard(text, `已複製雅語：「${text}」`);
+        }
+
+        // ================= 8. INITIALIZATION =================
+        window.onload = function () {
+            initCategoryPills();
+            renderCards();
+            initScenarios();
+            initQuickTags();
+
+            // Search listener with debounce
+            const searchInput = document.getElementById('card-search');
+            searchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value;
+                renderCards();
+            });
+        };
+    </script>
+</body>
+</html>
